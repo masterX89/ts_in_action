@@ -114,3 +114,57 @@ interface NamesRight {
   [x: string]: any
   [z: number]: number
 }
+
+// 函数类型接口
+
+// 1. 变量声明类型
+// 看上去是和变量强绑定的
+let addInterface1: (x: number, y: number) => number
+addInterface1 = (a, b) => a + b
+
+// 2. interface 声明函数类型
+interface AddInterface2 {
+  (x: number, y: number): number
+}
+let addInterface2: AddInterface2 = (a, b) => a + b
+
+// 3. type 类型别名
+type AddInterface3 = (x: number, y: number) => number
+let addInterface3: AddInterface3 = (a, b) => a + b
+
+// 混合类型接口
+// 函数同时具备属性（很好理解，function 也本来带有 length）
+// 这里将显式定义
+// 多用于第三方类库
+
+interface Lib {
+  (): void
+  version: string
+  doSomething(): number
+}
+// 在声明的时候就会做类型判断
+// 因此后续添加属性是没有作用的
+// 所以需要加上 as 断言
+let lib: Lib = (() => {}) as Lib
+lib.version = '1.0.0'
+lib.doSomething = () => 1
+
+let lib2: Lib = (() => {}) as Lib
+lib2.version = '2.0.0'
+lib2.doSomething = () => 2
+
+console.dir(lib)
+console.dir(lib2)
+
+// 注意混合类型的使用场景
+// 由于其多使用在三方类库中
+// 因此需要使用作用域确保返回单例
+
+function getLib() {
+  let lib: Lib = (() => {}) as Lib
+  lib.version = '1.0.0'
+  lib.doSomething = () => 1
+  return lib
+}
+
+let lib3: Lib = getLib()
