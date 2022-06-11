@@ -1,6 +1,16 @@
 // Class doc: https://www.tslang.cn/docs/handbook/classes.html
 // 总体而言，ts 的类覆盖了 es6 中的类
-class Dog {
+
+// abstract class 是 ts 对 es6 做的增强
+// 抽象类只能被 继承 不能被 实例化
+abstract class Animal {
+  eat() {
+    console.log('eat')
+  }
+  // 抽象方法 子类 必须实现
+  abstract sleep(): void
+}
+class Dog extends Animal {
   // 应用场景: It is generally used in classes that contain static members only
   // private constructor(name: string) {
   //   this.name = name
@@ -10,6 +20,7 @@ class Dog {
   //   this.name = name
   // }
   constructor(name: string) {
+    super()
     this.name = name
   }
   name: string
@@ -21,6 +32,9 @@ class Dog {
   private pri() {}
   // 只能在 类 和 子类 中访问，而不能在 实例 中访问
   protected pro() {}
+  sleep() {
+    console.log('dog sleep')
+  }
 }
 // “类的成员属性”都是实例属性，而不是原型属性，“类的成员方法”都是“原型”方法。
 // 与 ES6 不同的是属性需要有 初始值 或者 在构造函数中初始化 或者 可选
@@ -74,3 +88,39 @@ class Collie extends Dog {
 }
 
 console.dir(Collie)
+
+// 多态: 抽象方法 由子类实现 就可以达到 运行时 绑定的特性
+class Cat extends Animal {
+  sleep() {
+    console.log('cat sleep')
+  }
+}
+
+const cat = new Cat()
+const animals: Animal[] = [dog, cat]
+animals.forEach((animal) => {
+  animal.sleep()
+})
+
+// 链式调用
+class WorkFlow {
+  step1() {
+    console.log(this)
+    return this
+  }
+  step2() {
+    console.log(this)
+    return this
+  }
+}
+new WorkFlow().step1().step2()
+
+// 原型链 去寻找 step1 和 step2
+// this 指向问题 object 是谁调用指向谁 因此是SubWorkFlow
+class SubWorkFlow extends WorkFlow {
+  subStep() {
+    console.log(this)
+    return this
+  }
+}
+new SubWorkFlow().step1().subStep().step2()
