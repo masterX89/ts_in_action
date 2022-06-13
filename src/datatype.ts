@@ -14,6 +14,7 @@ let arr22: Array<number | string> = [0, 1, 2, 'str']
 let tuple1: [number, string] = [1, '1']
 let tuple2: [number, string, number] = [1, '1', 1]
 // tuple 越界添加
+// TODO: 和联合类型有关
 tuple1.push(1)
 console.log(tuple1)
 // 无法越界访问
