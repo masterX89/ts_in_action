@@ -55,3 +55,22 @@ npm i webpack-merge -D
        ]
    }
    ```
+## TODO LIST
+- [ ] 子类型
+  - `null` 和 `undefined` 是所有类型的子类型
+  - `never` 类型是任何类型的子类型
+  - 没有类型是 `never` 的子类型（即使 `any` 也不可以赋值给 `never`）
+- [ ] `declare` 的用途
+- [ ] `var` 显然没有提升到整个程序的最上端，它可以突破块作用域，提升到了函数作用域最上端
+```js
+function f(input) {
+    let a = 100;
+
+    if (input) {
+        var b = a + 1;
+        return b;
+    }
+    return b;
+}
+f() // undefined
+```

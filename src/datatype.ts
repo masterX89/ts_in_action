@@ -1,3 +1,4 @@
+// 基础类型文档 https://www.tslang.cn/docs/handbook/basic-types.html
 // 原始类型
 let num: number = 0
 let str: string = '0'
