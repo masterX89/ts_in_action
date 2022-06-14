@@ -2,6 +2,7 @@
 // excalidraw: ./assets/class-interface
 // 现在看到的源码中 class 更偏向于应对 实例化 的场景
 // 而 interface 更倾向于 约束 对象的 props
+// 两者的用法繁多，要学习还是要结合实际的应用场景来学
 interface Human {
   name: string
   eat(): void
