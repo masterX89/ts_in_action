@@ -1,4 +1,5 @@
 // 泛型文档: https://www.tslang.cn/docs/handbook/generics.html
+// 泛型大大增强了灵活性
 function identity(arg: number): number {
   return arg
 }
@@ -38,5 +39,35 @@ interface Log3<T = string> {
 
 let myLog3: Log3 = log
 myLog3('str')
-let myLog4: Log3<number> = log
-myLog4(1)
+let myLog31: Log3<number> = log
+myLog31(1)
+
+// 使用泛型约束类
+class Log4<T> {
+  run(val: T) {
+    console.log(val)
+    return val
+  }
+}
+let log4 = new Log4<number>()
+log4.run(1)
+// 亦可不指明泛型
+let log41 = new Log4()
+log41.run('str')
+
+interface Length {
+  length: number
+}
+// 使用 interface 去约束 泛型
+function log5<T extends Length>(val: T): T {
+  console.log(val)
+  // 需要约束 T 存在 length 属性
+  console.log(val.length)
+  return val
+}
+log5('aaa')
+log5([1, 2, 3])
+log5({ a: 1, b: 2, length: 2 })
+log5(() => {})
+// 没有 length 属性
+// log5(1)
