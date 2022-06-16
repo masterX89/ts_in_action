@@ -183,3 +183,41 @@ let obj3: Empty<number> = { value: 2 }
 obj1 = obj3
 
 // 函数泛型互相间兼容
+
+// 3. 类型保护：可以使用 instanceof in typeof 都是 js 老朋友了
+// 使用类型谓词 is 声明类型保护函数
+enum Type {
+  Strong,
+  Weak,
+}
+class Java {
+  helloJava() {
+    console.log('Hello Java!')
+  }
+}
+class JavaScript {
+  helloJavaScript() {
+    console.log('Hello JavaScript!')
+  }
+}
+
+function isJava(lang: Java | JavaScript): lang is Java {
+  return lang instanceof Java
+}
+
+function isJavaScript(lang: Java | JavaScript): lang is JavaScript {
+  return lang instanceof JavaScript
+}
+
+function getLang(type: Type): Java | JavaScript {
+  const lang = type === Type.Strong ? new Java() : new JavaScript()
+  if (isJava(lang)) {
+    lang.helloJava()
+  } else if (isJavaScript(lang)) {
+    lang.helloJavaScript()
+  }
+  return lang
+}
+
+getLang(Type.Strong)
+getLang(Type.Weak)
