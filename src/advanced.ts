@@ -221,3 +221,54 @@ function getLang(type: Type): Java | JavaScript {
 
 getLang(Type.Strong)
 getLang(Type.Weak)
+
+// 交叉类型适合 mixins
+// 是两种类型的并集
+interface Dog1 {
+  wow(): void
+}
+interface Cat1 {
+  mow(): void
+}
+
+let pet: Dog1 & Cat1 = {
+  wow() {},
+  mow() {},
+}
+
+// 联合类型并不确定，可以是多个类型中的一个
+// 通过 联合类型 中的 共有属性，来进行 类型保护，形成不同的 类型保护 块
+
+enum Kind {
+  Square,
+  Rectangle,
+}
+
+interface Square {
+  kind: Kind.Square
+  size: number
+}
+
+interface Rectangle {
+  kind: Kind.Rectangle
+  width: number
+  height: number
+}
+
+type Shape = Square | Rectangle
+
+function getArea(s: Shape): number {
+  let area = 0
+  switch (s.kind) {
+    case Kind.Square:
+      area = s.size * s.size
+      break
+    case Kind.Rectangle:
+      area = s.width * s.height
+      break
+  }
+  return area
+}
+
+console.log(getArea({ kind: Kind.Square, size: 2 }))
+console.log(getArea({ kind: Kind.Rectangle, width: 2, height: 3 }))
