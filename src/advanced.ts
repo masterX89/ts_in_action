@@ -272,3 +272,34 @@ function getArea(s: Shape): number {
 
 console.log(getArea({ kind: Kind.Square, size: 2 }))
 console.log(getArea({ kind: Kind.Rectangle, width: 2, height: 3 }))
+
+// 约束对 obj 不存在 属性的访问
+const objAdvanced = {
+  a: 1,
+  b: 2,
+  c: 3,
+}
+
+function getValue(obj: any, keys: string[]) {
+  return keys.map((key) => obj[key])
+}
+
+console.log(getValue(objAdvanced, ['a', 'c']))
+// 但是调用不存在的 key 也是可以的 [undefined, undefined]
+console.log(getValue(objAdvanced, ['d', 'f']))
+// i. keyof T
+interface Obj {
+  a: number
+  b: string
+}
+// 'a' | 'b'
+let key: keyof Obj
+// ii. T[K] 索引类型
+// let value: number
+let value: Obj['a']
+// iii. T extends U
+function getValueNew<T, K extends keyof T>(obj: T, keys: K[]): T[K][] {
+  return keys.map((key) => obj[key])
+}
+// Type '"d"' is not assignable to type '"a" | "b" | "c"'
+// console.log(getValueNew(objAdvanced, ['d', 'f']))
