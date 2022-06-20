@@ -303,3 +303,73 @@ function getValueNew<T, K extends keyof T>(obj: T, keys: K[]): T[K][] {
 }
 // Type '"d"' is not assignable to type '"a" | "b" | "c"'
 // console.log(getValueNew(objAdvanced, ['d', 'f']))
+
+// 映射类型
+
+interface Obj1 {
+  name: string
+  sex: string
+  age: number
+}
+
+// type ReadOnlyObj = {
+//   readonly name: string;
+//   readonly sex: string;
+//   readonly age: number;
+// }
+
+// 实现方法
+/**
+ * Make all properties in T readonly
+ */
+//  type Readonly<T> = {
+//   readonly [P in keyof T]: T[P];
+// };
+
+// 将类型映射为只读类型
+type ReadOnlyObj = Readonly<Obj1>
+
+// type PartialObj = {
+//   name?: string | undefined;
+//   sex?: string | undefined;
+//   age?: number | undefined;
+// }
+// 实现方法
+/**
+ * Make all properties in T optional
+ */
+//  type Partial<T> = {
+//   [P in keyof T]?: T[P];
+// };
+// 将类型映射为可选类型
+type PartialObj = Partial<Obj1>
+
+// type PickObj = {
+//   name: string;
+//   age: number;
+// }
+/**
+ * From T, pick a set of properties whose keys are in the union K
+ */
+//  type Pick<T, K extends keyof T> = {
+//   [P in K]: T[P];
+// };
+// 将类型映射为子集类型
+type PickObj = Pick<Obj1, 'name' | 'age'>
+
+// Readonly | Partial | Pick 是同态映射，属性只会来自原来的 Obj
+
+// 非同态映射类型
+// type RecordObj = {
+//   obj1: Obj1;
+//   obj2: Obj1;
+// }
+
+// 实现原理
+/**
+ * Construct a type with a set of properties K of type T
+ */
+//  type Record<K extends keyof any, T> = {
+//   [P in K]: T;
+// };
+type RecordObj = Record<'obj1' | 'obj2', Obj1>
