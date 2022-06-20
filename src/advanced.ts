@@ -373,3 +373,52 @@ type PickObj = Pick<Obj1, 'name' | 'age'>
 //   [P in K]: T;
 // };
 type RecordObj = Record<'obj1' | 'obj2', Obj1>
+
+// 条件类型
+// T extends U ? X : Y
+
+type TypeName<T> = T extends string
+  ? 'string'
+  : T extends number
+  ? 'number'
+  : T extends boolean
+  ? 'boolean'
+  : T extends undefined
+  ? 'undefined'
+  : 'object'
+
+// type T1 = "string"
+type T1 = TypeName<string>
+// type T2 = "object"
+type T2 = TypeName<string[]>
+
+// (A | B) extends U ? X : Y
+// (A extends U ? X : Y) | (B extends U ? X : Y)
+
+// type T3 = "string" | "object"
+type T3 = TypeName<string | string[]>
+
+// 实现类型过滤
+type Diff<T, U> = T extends U ? never : T
+// type T4 = "c" | "b"
+type T4 = Diff<'a' | 'b' | 'c', 'a' | 'e'>
+// Diff<'a', 'a' | 'e'> | Diff<'b', 'a' | 'e'> | Diff<'c', 'a' | 'e'>
+// never | 'b' | 'c'
+// 'b' | 'c' 从 T 中拿到 不能赋值给 U 的类型
+
+type NotNull<T> = Diff<T, undefined | null>
+// type T5 = string | number
+type T5 = NotNull<string | number | undefined | null>
+
+// Exclude<T,U> 就是官方的 Diff
+// NonNullable<T> 就是官方的 NotNull
+
+// Extract<T,U> 从 T 中抽取出可以赋值给 U 的类型
+// type T6 = "a"
+type T6 = Extract<'a' | 'b' | 'c', 'a' | 'e'>
+
+// ReturnType<T>
+// type T7 = string
+// type ReturnType<T extends (...args: any) => any> = T extends (...args: any) => infer R ? R : any;
+type T7 = ReturnType<() => string>
+// infer 关键字的意思是 待推断 或者 延迟推断
